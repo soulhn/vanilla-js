@@ -10,10 +10,10 @@
   <body>
     <div class="calculator">
       <div class="resultScreen">
-        <div class="resultBox">11</div>
+        <div class="resultBox">0</div>
       </div>
       <div class="buttonGroup">
-        <button class="calculatorButton bgDarkGray">C</button>
+        <button id="clearButton" class="calculatorButton bgDarkGray">C</button>
         <button class="calculatorButton bgDarkGray">+/-</button>
         <button class="calculatorButton bgDarkGray">%</button>
         <button class="calculatorButton bgOrange">/</button>
@@ -37,18 +37,27 @@
         <button class="calculatorButton bgOrange">+</button>
       </div>
       <div class="buttonGroup">
-        <button class="calculatorButton2 borderRadius_left">0</button>
+        <button class="calculatorButton calculatorButton2 borderRadius_left">0</button>
         <button class="calculatorButton">.</button>
         <button class="calculatorButton borderRadius_Right bgOrange">=</button>
       </div>
     </div>
     <script>
       const resultBox = document.querySelector(".resultBox");
+      const clearButton = document.querySelector("#clearButton");
+
       const calculatorButtons = document.querySelectorAll(".calculatorButton");
       const operatorButtons = document.querySelectorAll(".bgOrange");
       let currentNumber = "";
       let operation = "";
       let previousNumber = "";
+
+      clearButton.addEventListener("click", () => {
+        currentNumber = "";
+        previousNumber = "";
+        operation = "";
+        resultBox.textContent = "0";
+      });
 
       calculatorButtons.forEach((button) => {
         button.addEventListener("click", () => {
@@ -66,12 +75,7 @@
         button.addEventListener("click", () => {
           let operator = button.textContent;
 
-          if (operator === "C") {
-            currentNumber = "";
-            previousNumber = "";
-            operation = "";
-            resultBox.textContent = "0";
-          } else if (operator === "+/-") {
+          if (operator === "+/-") {
             currentNumber = String(-Number(currentNumber));
             resultBox.textContent = currentNumber;
           } else if (operator === "%" && currentNumber !== "") {
