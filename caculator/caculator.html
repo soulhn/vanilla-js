@@ -42,22 +42,61 @@
         <button class="calculatorButton borderRadius_Right bgOrange">=</button>
       </div>
     </div>
-
-    <!-- <script>
-      const resultBox = document.querySelector("#resultBox");
+    <script>
+      const resultBox = document.querySelector(".resultBox");
       const calculatorButtons = document.querySelectorAll(".calculatorButton");
+      const operatorButtons = document.querySelectorAll(".bgOrange");
       let currentNumber = "";
       let operation = "";
       let previousNumber = "";
 
-      calculatorButtons.forEach((button) => [
+      calculatorButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          console.log(buttonText);
-          resultBox.textContent = buttonText;
-        }),
-      ]);
+          let buttonText = button.textContent;
 
-      console.log(calculatorButtons);
-    </script> -->
+          // 숫자와 '.' 버튼 클릭
+          if (!isNaN(buttonText) || buttonText === ".") {
+            currentNumber += buttonText;
+            resultBox.textContent = currentNumber;
+          }
+        });
+      });
+
+      operatorButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          let operator = button.textContent;
+
+          if (operator === "C") {
+            currentNumber = "";
+            previousNumber = "";
+            operation = "";
+            resultBox.textContent = "0";
+          } else if (operator === "+/-") {
+            currentNumber = String(-Number(currentNumber));
+            resultBox.textContent = currentNumber;
+          } else if (operator === "%" && currentNumber !== "") {
+            currentNumber = String(Number(currentNumber) / 100);
+            resultBox.textContent = currentNumber;
+          } else if (["/", "*", "-", "+"].includes(operator)) {
+            previousNumber = currentNumber;
+            currentNumber = "";
+            operation = operator;
+          } else if (operator === "=" && previousNumber !== "" && currentNumber !== "") {
+            if (operation === "/") {
+              currentNumber = String(Number(previousNumber) / Number(currentNumber));
+            } else if (operation === "*") {
+              currentNumber = String(Number(previousNumber) * Number(currentNumber));
+            } else if (operation === "-") {
+              currentNumber = String(Number(previousNumber) - Number(currentNumber));
+            } else if (operation === "+") {
+              currentNumber = String(Number(previousNumber) + Number(currentNumber));
+            }
+            resultBox.textContent = currentNumber;
+            operation = "";
+            previousNumber = "";
+          }
+        });
+      });
+    </script>
   </body>
 </html>
